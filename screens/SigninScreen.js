@@ -1,4 +1,3 @@
-import { StatusBar } from 'expo-status-bar';
 import 'react-native-gesture-handler';
 import React, { Component } from 'react';
 import { 
@@ -8,7 +7,6 @@ import {
   TextInput, 
   TouchableOpacity 
 } from 'react-native';
-
 
 export default class Signin extends Component<Props> {
     
@@ -27,19 +25,16 @@ export default class Signin extends Component<Props> {
       />
       <TouchableOpacity
         style={styles.userBtn}
-        onPress={() => this.props.navigation.navigate('Home')}>
+        onPress={() => this.props.navigation.navigate('Content')}>
           <Text style={styles.btnText}>Sign In</Text>
       </TouchableOpacity>
     
       <Text style={styles.text2}>Don't Have An Account?
       <TouchableOpacity
-      onPress={() => this.props.navigation.navigate('Signup')}>
+      onPress={() => this.props.navigation.navigate('Sign Up')}>
           <Text style={styles.signup}>Sign Up</Text>
       </TouchableOpacity>
       </Text>
-      
-
-      <StatusBar style="auto" />
     </View>
     );
   }

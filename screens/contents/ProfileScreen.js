@@ -74,7 +74,7 @@ export default class Profile extends Component<Props> {
     bezier
     style={{
       marginVertical: 8,
-      borderRadius: 16
+      borderRadius: 16,
     }}
   />
       </View>

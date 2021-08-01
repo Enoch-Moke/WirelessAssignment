@@ -1,11 +1,11 @@
 import React, { Component } from "react";
+import { Picker } from '@react-native-picker/picker';
 import { 
   StyleSheet, 
   View, 
   Text,
   TextInput, 
   TouchableOpacity,
-  Picker,
   Platform,
 } from 'react-native';
 

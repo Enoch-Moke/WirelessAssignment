@@ -42,14 +42,14 @@ const SignupScreen = ({navigation}) => {
       <TouchableOpacity
       style={styles.buttonContainer}
       //onPress={() => register(email, password)}
-      onPress={() => navigation.navigate('UserDetails')}
+        onPress={() => navigation.navigate('User Details')}
       >
         <Text style={styles.btnText}>Sign Up</Text>
       </TouchableOpacity>
 
       <Text style={styles.text2}>Already have an account? 
       <TouchableOpacity
-      onPress={() => navigation.navigate('Signin')}>
+      onPress={() => navigation.navigate('Sign In')}>
           <Text style={styles.signin}>Sign In</Text>
       </TouchableOpacity>
       </Text>
