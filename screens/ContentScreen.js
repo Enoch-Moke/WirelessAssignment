@@ -1,48 +1,24 @@
 import React from 'react';
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Home from './contents/HomeScreen';
 import Search from './contents/SearchScreen';
 import Add from './contents/AddScreen';
-import Plan from './contents/PlanScreen';
+import PlanHome from './contents/PlanHome';
 import Profile from './contents/ProfileScreen';
 
-const Tab = createMaterialBottomTabNavigator();
+const Tab = createBottomTabNavigator();
 
 function ContentScreen() {
     return (
         <Tab.Navigator
-            screenOptions={({ route }) => ({
-                tabBarIcon: ({ focused, size, color }) => {
-                    let iconName;
-                    if (route.name === 'Home') {
-                        iconName = 'home';
-                        size = focused ? 23 : 18;
-                    } else if (route.name === 'Search') {
-                        iconName = 'search';
-                        size = focused ? 23 : 18;
-                    } else if (route.name === 'Add') {
-                        iconName = 'plus';
-                        size = focused ? 23 : 18;
-                    } else if (route.name === 'Plan') {
-                        iconName = 'book-open';
-                        size = focused ? 23 : 18;
-                    } else if (route.name === 'Profile') {
-                        iconName = 'user';
-                        size = focused ? 23 : 18;
-                    }
-                    return (
-                        <FontAwesome5
-                            name={iconName}
-                            size={size}
-                            color={color}
-                        />
-                    )
-                }
-            })}
-            activeColor='#8AB594'
-            inactiveColor='#d3d3d3'
-            barStyle={{ backgroundColor: '#ffffff' }}
+            tabBarOptions={{
+                activeTintColor: '#8AB594',
+                inactiveTintColor: '#d3d3d3',
+                showLabel: true,
+                labelStyle: { fontSize: 14 },
+            }
+            }
         >
             <Tab.Screen
                 name='Home'
@@ -58,7 +34,7 @@ function ContentScreen() {
             />
             <Tab.Screen
                 name='Plan'
-                component={Plan}
+                component={PlanHome}
             />
             <Tab.Screen
                 name='Profile'
