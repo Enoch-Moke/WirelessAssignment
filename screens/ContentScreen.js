@@ -2,7 +2,7 @@ import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Home from './contents/HomeScreen';
-import Search from './contents/SearchScreen';
+import Search from './contents/RecipeScreen';
 import Add from './contents/AddScreen';
 import PlanHome from './contents/PlanHome';
 import Profile from './contents/ProfileScreen';
