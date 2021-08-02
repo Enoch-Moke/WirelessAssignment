@@ -1,39 +1,44 @@
 {
-  "main": "node_modules/expo/AppEntry.js",
+  "name": "wirelessassignmentrn",
+  "version": "0.0.1",
+  "private": true,
   "scripts": {
-    "start": "expo start",
-    "android": "expo start --android",
-    "ios": "expo start --ios",
-    "web": "expo start --web",
-    "eject": "expo eject"
+    "android": "react-native run-android",
+    "ios": "react-native run-ios",
+    "start": "react-native start",
+    "test": "jest",
+    "lint": "eslint ."
   },
   "dependencies": {
-    "@material-ui/core": "^4.12.1",
-    "@material-ui/icons": "^4.11.2",
-    "@react-native-community/masked-view": "^0.1.10",
+    "@material-ui/core": "^4.12.3",
+    "@react-native-community/masked-view": "^0.1.11",
+    "@react-native-picker/picker": "^1.16.4",
     "@react-navigation/bottom-tabs": "^5.11.11",
+    "@react-navigation/material-bottom-tabs": "^5.3.15",
     "@react-navigation/native": "^5.9.4",
-    "expo": "~42.0.1",
-    "expo-status-bar": "~1.0.4",
-    "react": "16.13.1",
-    "react-dom": "16.13.1",
-    "react-native": "https://github.com/expo/react-native/archive/sdk-42.0.0.tar.gz",
-    "react-native-chart-kit": "^6.11.0",
-    "react-native-dropdown-picker": "^5.1.21",
-    "react-native-gesture-handler": "~1.10.2",
-    "react-native-material-dropdown": "^0.11.1",
+    "@react-navigation/stack": "^5.14.5",
+    "react": "17.0.1",
+    "react-native": "0.64.2",
+    "react-native-chart-kit": "^2.6.1",
+    "react-native-gesture-handler": "^1.10.3",
     "react-native-paper": "^4.9.2",
-    "react-native-reanimated": "~2.2.0",
-    "react-native-safe-area-context": "3.2.0",
-    "react-native-screens": "~3.4.0",
+    "react-native-reanimated": "^2.2.0",
+    "react-native-safe-area-context": "^3.2.0",
+    "react-native-screens": "^3.4.0",
     "react-native-svg": "^12.1.1",
-    "react-native-vector-icons": "^8.1.0",
-    "react-native-web": "~0.13.12",
-    "react-navigation": "^4.4.4",
-    "react-navigation-stack": "^2.10.4"
+    "react-native-vector-icons": "^8.1.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0"
+    "@babel/core": "^7.12.9",
+    "@babel/runtime": "^7.12.5",
+    "@react-native-community/eslint-config": "^2.0.0",
+    "babel-jest": "^26.6.3",
+    "eslint": "7.14.0",
+    "jest": "^26.6.3",
+    "metro-react-native-babel-preset": "^0.64.0",
+    "react-test-renderer": "17.0.1"
   },
-  "private": true
+  "jest": {
+    "preset": "react-native"
+  }
 }

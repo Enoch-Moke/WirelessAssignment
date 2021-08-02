@@ -1,55 +1,47 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { NavigationContainer } from '@react-navigation/native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import Home from './contents/HomeScreen';
 import Search from './contents/SearchScreen';
 import Add from './contents/AddScreen';
-import Plan from './contents/PlanScreen';
+import PlanHome from './contents/PlanHome';
 import Profile from './contents/ProfileScreen';
 
-const sampleTabNavigation = createBottomTabNavigator(
-);
- 
-export default class Content extends React.Component {
-    render() {
- 
-    return (
-    <NavigationContainer>
-    <sampleTabNavigation.Navigator
-    screenOptions={({ route }) => ({
-    tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
- 
-        if (route.name === 'Home') {
-            iconName = 'md-home-sharp';
-        } else if (route.name === 'Search') {
-            iconName = 'md-search-sharp';
-        } else if (route.name === 'Add') {
-            iconName = 'md-add-circle-sharp';
-        } else if (route.name === 'Plan') {
-            iconName = 'md-book-sharp';
-        } else if (route.name === 'Profile') {
-            iconName = 'md-person-sharp';
-        }
- 
-        return <Ionicons name = {iconName} size={size} color={color} />;
-    },
-    })}
+const Tab = createBottomTabNavigator();
 
-    tabBarOptions={{
-        activeTintColor: '#8AB594',
-        inactiveTintColor: '#626262',
-    }}
-    >
-    <sampleTabNavigation.Screen name="Home" component={Home} />
-    <sampleTabNavigation.Screen name="Search" component={Search} />
-    <sampleTabNavigation.Screen name="Add" component={Add} />
-    <sampleTabNavigation.Screen name="Plan" component={Plan} />
-    <sampleTabNavigation.Screen name="Profile" component={Profile} />
-    </sampleTabNavigation.Navigator>
-    </NavigationContainer>
-);
+function ContentScreen() {
+    return (
+        <Tab.Navigator
+            tabBarOptions={{
+                activeTintColor: '#8AB594',
+                inactiveTintColor: '#d3d3d3',
+                showLabel: true,
+                labelStyle: { fontSize: 14 },
+            }
+            }
+        >
+            <Tab.Screen
+                name='Home'
+                component={Home}
+            />
+            <Tab.Screen
+                name='Search'
+                component={Search}
+            />
+            <Tab.Screen
+                name='Add'
+                component={Add}
+            />
+            <Tab.Screen
+                name='Plan'
+                component={PlanHome}
+            />
+            <Tab.Screen
+                name='Profile'
+                component={Profile}
+            />
+        </Tab.Navigator>
+    )
 }
-}
+
+export default ContentScreen;
