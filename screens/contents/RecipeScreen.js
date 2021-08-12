@@ -20,7 +20,7 @@ const CAROUSELIMAGES = {
   image4: require('../../images/wild-mushroom-risotto.jpg')
 };
 
-const App = () => {
+const RecipeScreen = ({ navigation: { navigate } }) => {
   const [images, setImages] = useState([
     { id: '1', image: CAROUSELIMAGES.image1 },
     { id: '2', image: CAROUSELIMAGES.image2 },
@@ -67,7 +67,8 @@ const App = () => {
           </View>
 
           <View style={{padding: 10}}>
-            <TouchableOpacity style={styles.menuItem}>
+            <TouchableOpacity style={styles.menuItem}
+            onPress={() => navigate('Recipe Details')}>
               <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
               <Text style={styles.menuText}>
                 Salad
@@ -122,7 +123,7 @@ const App = () => {
   );
 };
 
-export default App;
+export default RecipeScreen;
 
 const styles = StyleSheet.create({
   container: {
