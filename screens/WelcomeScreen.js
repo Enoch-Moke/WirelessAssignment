@@ -11,7 +11,7 @@ const WelcomeScreen = ({navigation}) => {
         <Text style={styles.description}>Keep track of your diet with Fit-Sique</Text>
         <TouchableOpacity
         style={styles.buttonContainer}
-        onPress={() => navigation.navigate('Sign Up')}
+        onPress={() => navigation.navigate('Auth')}
         >
             <Text style={styles.text}>Get Started</Text>
         </TouchableOpacity>

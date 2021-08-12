@@ -10,46 +10,50 @@ import { createStackNavigator } from '@react-navigation/stack';
 import WelcomeScreen from './screens/WelcomeScreen';
 import SignupScreen from './screens/SignupScreen';
 import SigninScreen from './screens/SigninScreen';
-import UserDetailsScreen from './screens/UserDetailsScreen';
-import GoalScreen from './screens/GoalScreen';
 import ContentScreen from './screens/ContentScreen';
 
 const Stack = createStackNavigator();
 
+function AuthScreens() {
+  return (
+    <Stack.Navigator
+      initialRouteName="LoginScreen"
+      screenOptions={{
+        headerShown: false,
+      }}
+    >
+      <Stack.Screen
+        name="Sign In"
+        component={SigninScreen}
+      />
+      <Stack.Screen
+        name="Sign Up"
+        component={SignupScreen}
+      />
+    </Stack.Navigator>
+  );
+}
+
 function App() {
   return (
     <NavigationContainer>
-      <Stack.Navigator>
+      <Stack.Navigator
+      initialRouteName='Welcome'
+      screenOptions={{
+        header: () => null
+      }}
+      >
         <Stack.Screen
           name='Welcome'
           component={WelcomeScreen}
-        //make the header become null
-        options={{
-          header: () => null
-        }}
         />
         <Stack.Screen
-          name='Sign Up'
-          component={SignupScreen}
-        />
-        <Stack.Screen
-          name='Sign In'
-          component={SigninScreen}
-        />
-        <Stack.Screen
-          name='User Details'
-          component={UserDetailsScreen}
-        />
-        <Stack.Screen
-          name='Goal'
-          component={GoalScreen}
+          name='Auth'
+          component={AuthScreens}
         />
         <Stack.Screen
           name='Content'
           component={ContentScreen}
-          options={{
-            header: () => null
-          }}
         />
       </Stack.Navigator>
     </NavigationContainer>
