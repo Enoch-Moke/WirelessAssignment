@@ -1,84 +1,83 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
+    StyleSheet,
+    Text,
+    View,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { CustomButton } from '../../utilities/CustomButton';
 
-export default function Home({ navigation, route }) {
+export default function HomeScreen({ navigation, route }) {
 
-  const [email, setEmail] = useState('');
+    const [email, setEmail] = useState('');
 
-  useEffect(() => {
-    validateUser();
-  }, []) 
+    useEffect(() => {
+        validateUser();
+    }, [])
 
-  const validateUser = () => {
-    try {
-      AsyncStorage.getItem('UserData')
-        .then(value => {
-          if (value != null) {
-            let user = JSON.parse(value);
-            setEmail(user.Email);
-          }
+    const validateUser = () => {
+        try {
+            AsyncStorage.getItem('UserData')
+                .then(value => {
+                    if (value != null) {
+                        let user = JSON.parse(value);
+                        setEmail(user.Email);
+                    }
+                }
+
+                )
+        } catch (error) {
+            console.log(error);
         }
-
-        )
-    } catch (error) {
-      console.log(error);
     }
-  }
 
-  const logout = async () => {
-    try {
-      await AsyncStorage.removeItem('UserData');
-      navigation.navigate('Auth');
-    } catch (error) {
-      console.log(error);
+    const logout = async () => {
+        try {
+            await AsyncStorage.removeItem('UserData');
+            navigation.navigate('Auth');
+        } catch (error) {
+            console.log(error);
+        }
     }
-  }
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.text}>
-        Welcome {email} !
-      </Text>
+    return (
+        <View style={styles.container}>
+            <Text style={styles.text}>
+                Welcome {email}.
+            </Text>
+            <CustomButton
+                style={styles.button}
+                title='Your Meal Log'
+                onPress={() => {
+                    navigation.navigate('My Meal Log', {
+                    email: email,
+                })}}
+            />
+            <CustomButton
+                style={styles.button}
+                title='Log Out'
+                onPress={logout}
+            />
 
-      <TouchableOpacity
-        style={styles.userBtn}
-        onPress={logout}>
-        <Text style={styles.btnText}>Log Out</Text>
-      </TouchableOpacity>
-    </View>
-  )
+
+        </View>
+    )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#DFEFE3',
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 10,
-  },
-  userBtn: {
-    backgroundColor: '#8AB594',
-    padding: 15,
-    marginTop: 100,
-    bottom: 0,
-    width: 300,
-    fontFamily: 'Roboto',
-  },
-  btnText: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#Ffffff',
-    fontFamily: 'Roboto',
-  },
+    container: {
+        flex: 1,
+        justifyContent: 'flex-start',
+        alignItems: 'center',
+        backgroundColor: '#DFEFE3',
+        paddingTop: 20,
+    },
+    text: {
+        fontSize: 20,
+        fontWeight: 'bold',
+        margin: 10,
+    },
+    button: {
+        margin: -50,
+    }
 });
