@@ -8,7 +8,7 @@ import {
   TextInput,
   Alert,
 } from 'react-native';
-
+import { CustomButton } from '../utilities/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 let config = require('../Config');
 
@@ -150,12 +150,10 @@ const SignupScreen = ({ navigation }) => {
       </TouchableOpacity>
 
       <View>
-        <TouchableOpacity
-          style={styles.buttonContainer}
+        <CustomButton
+          title='Sign Up'
           onPress={handleSignUp}
-        >
-          <Text style={styles.btnText}>Sign Up</Text>
-        </TouchableOpacity>
+        />
 
         <Text style={styles.text2}>Already have an account?
           <TouchableOpacity
@@ -184,35 +182,10 @@ const styles = StyleSheet.create({
     marginBottom: 30,
     fontFamily: 'Roboto',
   },
-  navButton: {
-    marginTop: 15,
-  },
-  navButtonText: {
-    fontSize: 18,
-    fontWeight: '500',
-    color: '#2e64e5',
-  },
-  buttonContainer: {
-    marginTop: 10,
-    width: 300,
-    backgroundColor: '#8AB594',
-    padding: 15,
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: 3,
-    fontFamily: 'Roboto',
-  },
-  btnText: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#Ffffff',
-    fontFamily: 'Roboto',
-  },
   inputContainer: {
     marginTop: 5,
     marginBottom: 10,
     width: '100%',
-
     borderColor: '#ccc',
     borderRadius: 3,
     borderWidth: 1,
@@ -244,10 +217,8 @@ const styles = StyleSheet.create({
     width: 300,
     backgroundColor: '#FFFFFF',
     paddingTop: 5,
-    paddingBottom: 5,
     paddingLeft: 10,
     paddingRight: 10,
-    marginBottom: 10,
     borderRadius: 30,
   },
 });

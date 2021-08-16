@@ -68,7 +68,7 @@ export default function Signin({ navigation }) {
         return response.json();
       })
       .then(user => {
-        if(user!=null) {
+        if (user != null) {
           if (password === user.password) {
             setUser();
             navigation.navigate('Content');
@@ -78,7 +78,7 @@ export default function Signin({ navigation }) {
         } else {
           Alert.alert('Warning', 'No account found. Please register an account');
         }
-        
+
       })
       .catch(error => {
         console.error(error);

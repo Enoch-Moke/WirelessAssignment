@@ -1,5 +1,6 @@
 import React from 'react';
 import { View, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
+import { CustomButton } from '../utilities/CustomButton';
 
 const WelcomeScreen = ({navigation}) => {
     return(
@@ -9,12 +10,10 @@ const WelcomeScreen = ({navigation}) => {
             source={require('../images/welcome.png')}
         />
         <Text style={styles.description}>Keep track of your diet with Fit-Sique</Text>
-        <TouchableOpacity
-        style={styles.buttonContainer}
+        <CustomButton
+        title='Get Started' 
         onPress={() => navigation.navigate('Auth')}
-        >
-            <Text style={styles.text}>Get Started</Text>
-        </TouchableOpacity>
+        />
     </View>
     );     
 };
