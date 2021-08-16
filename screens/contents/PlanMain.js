@@ -1,74 +1,91 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, Component} from 'react';
 import {
-  View,
-  Text,
   StyleSheet,
+  Text,
+  View,
   TouchableOpacity,
+  TouchableHighlight,
+  Alert,
+  FlatList,
+  SafeAreaView,
+  Image,
 } from 'react-native';
 
-import PlanItem from '../../utilities/PlanItem';
+//import PlanItem from '../../utilities/PlanItem';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class PlanMain extends Component<Props>  {
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>PLANS</Text>
+let config = require('../../Config');
 
-        <Text style={{ fontSize: 15, marginBottom: 20, color: '#124f22' }}>Nine most popular diets rated by experts 2017</Text>
+export default function PlanMain ({ navigation, route })  {
+  
+  //const { email } = route.params;
+  const [fetching, setFetching] = useState(false);
+  const [plans, setPlans] = useState([]);
 
-        <View style={styles.planContainer}>
-          <TouchableOpacity style={styles.image}
-            onPress={() => this.props.navigation.navigate('Plan Details')}>
-            <PlanItem planImage={require('../../images/atkins_diet.png')} />
-          </TouchableOpacity>
+  useEffect(() => {
+    getData();
+  }, [])
 
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/zone_diet.png')} />
-          </TouchableOpacity>
+  const getData = () => {
+    let url = config.settings.serverPath + '/api/plans';
+    setFetching(true);
 
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/Low-carb-diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/Ketogenic-Diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/paleo_diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/vegan_diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/weight_watchers_diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/raw_food_diet.png')} />
-          </TouchableOpacity>
-
-          <TouchableOpacity style={styles.image}>
-            <PlanItem planImage={require('../../images/mediterranean_diet.png')} />
-          </TouchableOpacity>
-
-        </View>
-
-      </View>
-
-
-    );
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          Alert.alert('Error in fetching plans', response.status.toString());
+          throw Error('Error in fetching plans: ' + response.status);
+        }
+        return response.json()
+      })
+      .then((plansData) => {
+          setPlans(plansData);
+          setFetching(false);
+      })
+      .catch((error) => {
+        console.log(error)
+      });
   }
+
+  return (
+    <View style={styles.container} >
+      <Text style={{ margin: 10, fontSize: 15, marginBottom: 20, color: '#124f22' }}>Nine most popular diets rated by experts 2017</Text>
+      <FlatList
+        data={plans}
+        showsVerticalScrollIndicator={true}
+        refreshing={fetching}
+        renderItem={({ item }) => {
+
+          return (<TouchableHighlight
+            underlayColor={'#cccccc'}
+            onPress={() => {
+              navigation.navigate('Plan Details', {
+                id: item.plan_id,
+                headerTitle: item.plan_name,
+                // refresh: this._query,
+              })
+            }}
+          >
+            <View style={styles.planList}>
+              <Image source={{uri: item.plan_name_photo}}
+                style={{width: 100,height: 100}}/>
+              <Text style={styles.planTitle}>{item.plan_name}</Text>
+            </View>
+          </TouchableHighlight>);
+        }}
+        keyExtractor={(item) => { item.plan_id.toString() }}
+      />
+    </View>
+  )
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    justifyContent: 'flex-start',
+    // alignItems: 'center',
     backgroundColor: '#DFEFE3',
-    alignItems: 'center',
-    //justifyContent: 'center',
+    paddingTop: 20,
   },
 
   text: {
@@ -77,7 +94,8 @@ const styles = StyleSheet.create({
     margin: 10,
     color: '#050505',
     marginBottom: 10,
-    marginTop: 40,
+    marginTop: 10,
+    fontWeight: 'bold',
   },
 
   planContainer: {
@@ -91,8 +109,23 @@ const styles = StyleSheet.create({
     height: '50%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
 
-  }
+  planList: {
+    paddingTop: 15,
+    paddingBottom: 15,
+    marginLeft: 40,
+    borderBottomWidth: 1,
+    borderColor: '#ccc',
+  },
+
+  planTitle: {
+    fontSize: 15,
+    fontWeight: '800',
+    color: '#07006b',
+    marginTop: 10,
+    fontWeight: 'bold',
+  },
 
 });
 
