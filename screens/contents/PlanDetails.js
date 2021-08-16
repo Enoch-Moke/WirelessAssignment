@@ -1,75 +1,85 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect, Component } from 'react';
 import {
-    View,
-    Text,
     StyleSheet,
+    Text,
+    View,
     TouchableOpacity,
+    TouchableHighlight,
+    Alert,
+    FlatList,
+    SafeAreaView,
     Image,
 } from 'react-native';
+//import AsyncStorage from '@react-native-async-storage/async-storage';
 
-export default class PlanDetails extends Component<Props>  {
-    render() {
-        return (
-            <View style={styles.container}>
-                <Text style={styles.text}>5-DAY PLAN</Text>
-                <Text style={{ color: 'blue', fontWeight: 'bold', margin: 10 }}>ATKINS DIET</Text>
+let config = require('../../Config');
 
-                <View style={styles.dayContainer}>
-                    <Text style={{ color: 'green', fontWeight: 'bold', margin: 10, marginBottom: 0 }}>DAY 1</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Breakfast: Scramble Egg</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Lunch: Grill Chicken + Salad</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Dinner: Fried Chicken</Text>
-                </View>
+export default function PlanDetails({ navigation, route }) {
+    const { id, headerTitle } = route.params;
+    const [fetching, setFetching] = useState(false);
+    const [plan, setPlan] = useState([]);
 
-                <View style={styles.dayEvenContainer}>
-                    <Text style={{ color: 'green', fontWeight: 'bold', margin: 10, marginBottom: 0 }}>DAY 2</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Breakfast: Scramble Egg</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Lunch: Grill Lamb + Salad</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Dinner: Fried Chicken with sauce</Text>
-                    <Image
-                        source={require('../../images/scramble.png')}
-                        style={styles.image}
-                    />
-                </View>
+    useEffect(() => {
+        getDetails();
+    }, [])
 
-                <View style={styles.dayContainer}>
-                    <Text style={{ color: 'green', fontWeight: 'bold', margin: 10, marginBottom: 0 }}>DAY 3</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Breakfast: Scramble Egg</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Lunch: Fried Chicken</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Dinner: Soup</Text>
-                </View>
+    const getDetails = () => {
+        console.log("id: " + id);
+        let url = config.settings.serverPath + '/api/plans/' + id;
+        setFetching(true);
 
-                <View style={styles.dayEvenContainer}>
-                    <Text style={{ color: 'green', fontWeight: 'bold', margin: 10, marginBottom: 0 }}>DAY 4</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Breakfast: Lemon + Sausages</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Lunch: Grill Salmon</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Dinner: Soup</Text>
-                    <Image
-                        source={require('../../images/salmon.png')}
-                        style={styles.image}
-                    />
-                </View>
-
-                <View style={styles.dayContainer}>
-                    <Text style={{ color: 'green', fontWeight: 'bold', margin: 10, marginBottom: 0 }}>DAY 5</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Breakfast: Scramble Egg</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Lunch: Chicken + Salad</Text>
-                    <Text style={{ color: 'black', margin: 10, marginBottom: -10 }}>Dinner: Fried Lamb</Text>
-
-                </View>
-            </View>
-
-
-        );
+        fetch(url)
+            .then((response) => {
+                if (!response.ok) {
+                    Alert.alert('Error in fetching plan', response.status.toString());
+                    throw Error('Error in fetching plan: ' + response.status);
+                }
+                return response.json()
+            })
+            .then((planData) => {
+                setPlan(planData);
+                console.log("plan data: " + planData);
+                setFetching(false);
+            })
+            .catch((error) => {
+                console.log(error)
+            });
     }
+
+    return (
+        console.log("plan" + plan),
+        <View style={styles.container} >
+            <FlatList
+                data={plan}
+                showsVerticalScrollIndicator={true}
+                refreshing={fetching}
+                renderItem={({ item }) => {
+                    return (
+                        <View style={styles.planList}>
+                            <Text style={styles.planTitle}>{item.plan_days}</Text>
+                            <Text style={styles.planInfo}>{item.breakfast}</Text>
+                            <Text style={styles.planInfo}>{item.lunch}</Text>
+                            <Text style={styles.planInfo}>{item.dinner}</Text>
+                            <Image source={{ uri: item.plan_photo }}
+                                style={styles.image} />
+                        </View>
+                    );
+                }}
+                keyExtractor={(item, index) => index.toString()}
+            />
+
+        </View>
+    )
 }
+
+
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        justifyContent: 'flex-start',
         backgroundColor: '#DFEFE3',
-        alignItems: 'center',
-        justifyContent: 'center',
+        paddingTop: 20,
     },
 
     text: {
@@ -86,12 +96,18 @@ const styles = StyleSheet.create({
         backgroundColor: '#cffadb',
         width: '100%',
         height: 100,
+        color: 'black',
+        margin: 10,
+        marginBottom: -10
     },
 
     dayEvenContainer: {
         backgroundColor: '#Ffffff',
         width: '100%',
         height: 100,
+        color: 'black',
+        margin: 10,
+        marginBottom: -10
     },
 
     planContainer: {
@@ -107,6 +123,38 @@ const styles = StyleSheet.create({
         right: 12,
         top: 2,
         resizeMode: 'contain',
-    }
+    },
+
+    daytext: {
+        color: 'green',
+        fontWeight: 'bold',
+        margin: 10,
+        marginBottom: 0,
+    },
+
+    title: {
+        fontSize: 22,
+        fontWeight: 'bold',
+        marginBottom: 15,
+        color: '#000000',
+    },
+    planTitle: {
+        fontSize: 25,
+        fontWeight: '800',
+        color: '#000000',
+        marginBottom: 30,
+    },
+    planInfo: {
+        fontSize: 20,
+        marginBottom: 30,
+    },
+
+    planList: {
+        paddingTop: 15,
+        paddingBottom: 15,
+        marginLeft: 40,
+        borderBottomWidth: 1,
+        borderColor: '#ccc',
+    },
 
 });
