@@ -6,12 +6,10 @@ import {
   TouchableHighlight,
   Alert,
   FlatList,
-  SafeAreaView,
-  LogBox,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { FloatingAction } from 'react-native-floating-action';
-LogBox.ignoreAllLogs();
+import { CustomLabel } from '../../utilities/CustomLabel';
+
 let config = require('../../Config');
 
 const actions = [{
@@ -91,11 +89,12 @@ export default function ViewLog({ navigation, route }) {
               })
             }}
           >
-            <View style={styles.mealList}>
-              <Text style={styles.mealTitle}>{item.meal_name}</Text>
-              <Text style={styles.mealInfo}>{item.meal_cal} kcal</Text>
-              <Text style={styles.mealInfo}>- {newdate}</Text>
-            </View>
+            <CustomLabel
+              labelContainer={styles.mealList}
+              title1={item.meal_name}
+              title2={item.meal_cal + " kcal"}
+              title3={"- " + newdate}
+            />
           </TouchableHighlight>);
         }}
         ListEmptyComponent={({ item }) => {
@@ -106,7 +105,7 @@ export default function ViewLog({ navigation, route }) {
             </Text>
           );
         }}
-        keyExtractor={(item) => { item.meal_id.toString() }}
+        keyExtractor={(item) => { return item.meal_id.toString() }}
       />
       <FloatingAction
         actions={actions}
@@ -125,25 +124,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#DFEFE3',
     paddingTop: 20,
   },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    margin: 10,
-  },
   mealList: {
-    paddingTop: 15,
-    paddingBottom: 15,
-    marginLeft: 40,
     borderBottomWidth: 1,
     borderColor: '#ccc',
-  },
-  mealTitle: {
-    fontSize: 25,
-    fontWeight: '800',
-    color: '#000000',
-  },
-  mealInfo: {
-    fontSize: 18,
   },
   noDataMsg: {
     paddingTop: 40,

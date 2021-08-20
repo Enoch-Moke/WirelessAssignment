@@ -6,6 +6,8 @@ import {
     Alert,
 } from 'react-native';
 import { FloatingAction } from 'react-native-floating-action';
+import { CustomLabel } from '../../utilities/CustomLabel';
+
 let config = require('../../Config');
 
 const actions = [{
@@ -95,14 +97,21 @@ export default function ViewDetails({ navigation, route }) {
 
     return (
         <View style={styles.container}>
-            <View style={styles.mealContainer}>
-                <Text style={styles.title}>Food</Text>
-                <Text style={styles.mealTitle}>{meal ? meal.meal_name : ''}</Text>
-                <Text style={styles.title}>Calories</Text>
-                <Text style={styles.mealInfo}>{meal ? meal.meal_cal : ''} kcal</Text>
-                <Text style={styles.title}>Record Date</Text>
-                <Text style={styles.mealInfo}>{date}</Text>
-            </View>
+            <CustomLabel
+                style1={styles.title}
+                title1={"Food"}
+                title2={meal ? meal.meal_name : ''}
+            />
+            <CustomLabel
+                style1={styles.title}
+                title1={"Calories"}
+                title2={meal ? meal.meal_cal + " kcal" : ''}
+            />
+            <CustomLabel
+                style1={styles.title}
+                title1={"Record Date"}
+                title2={date}
+            />
             <FloatingAction
                 actions={actions}
                 overrideWithAction={true}
@@ -120,25 +129,9 @@ const styles = StyleSheet.create({
         backgroundColor: '#DFEFE3',
         paddingTop: 20,
     },
-    mealContainer: {
-        paddingTop: 15,
-        paddingBottom: 15,
-        marginLeft: 40,
-    },
     title: {
-        fontSize: 22,
         fontWeight: 'bold',
         marginBottom: 15,
         color: '#000000',
     },
-    mealTitle: {
-        fontSize: 25,
-        fontWeight: '800',
-        color: '#000000',
-        marginBottom: 30,
-    },
-    mealInfo: {
-        fontSize: 20,
-        marginBottom: 30,
-    }
 });
