@@ -15,14 +15,14 @@ function ContentScreen() {
   return (
     <Tab.Navigator
       tabBarOptions={{
-        inactiveBackgroundColor: '#9299ff',
-        activeBackgroundColor: '#030d9f',
-        activeTintColor: 'white',
-        inactiveTintColor: 'black',
+        inactiveBackgroundColor: '#9f6f39',
+        activeBackgroundColor: '#f4f3ec',
+        activeTintColor: '#9f6f39',
+        inactiveTintColor: '#dfd9a1',
         alignItems: 'center',
         justifyContent: 'center',
         showLabel: true,
-        labelStyle: {fontSize: 16},
+        labelStyle: {fontSize: 16, fontFamily: 'Helvetica', fontWeight: 'bold'},
       }}>
       <Tab.Screen name="Home" component={Home} />
       <Tab.Screen name="Recipe" component={Recipe} />

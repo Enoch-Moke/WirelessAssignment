@@ -1,31 +1,57 @@
-import React, { useState, useRef, Component} from 'react';
+import React, { useState, useEffect, Component} from 'react';
 import Carousel, { Pagination } from 'react-native-snap-carousel';
 import {
   StyleSheet,
-  Button,
   Text,
   View,
   TouchableOpacity,
+  TouchableHighlight,
   Image,
   Dimensions,
   ScrollView,
+  FlatList,
+  Alert,
 } from 'react-native';
+
+let config = require('../../Config');
 
 const { width } = Dimensions.get('window');
 
-const CAROUSELIMAGES = {
-  image1: require('../../images/salad.jpg'),
-  image2: require('../../images/wild-mushroom-risotto.jpg'),
-  image3: require('../../images/salad.jpg'),
-  image4: require('../../images/wild-mushroom-risotto.jpg')
-};
+export default function RecipeScreen ({ navigation, route }) {
+  const [fetching, setFetching] = useState(false);
+  const [recipes, setRecipes] = useState([]);
 
-const RecipeScreen = ({ navigation: { navigate } }) => {
+  useEffect(() => {
+    getData();
+  }, [])
+
+  const getData = () => {
+    let url = config.settings.serverPath + '/api/recipes';
+    setFetching(true);
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          Alert.alert('Error in fetching recipes', response.status.toString());
+          throw Error('Error in fetching recipes: ' + response.status);
+        }
+        return response.json();
+      })
+      .then((recipesData) => {
+        setRecipes(recipesData);
+        console.log(recipesData);
+        setFetching(false);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+  
   const [images, setImages] = useState([
-    { id: '1', image: CAROUSELIMAGES.image1 },
-    { id: '2', image: CAROUSELIMAGES.image2 },
-    { id: '3', image: CAROUSELIMAGES.image3 },
-    { id: '4', image: CAROUSELIMAGES.image4 }
+    { id: '1', image: {uri: 'https://images.immediate.co.uk/production/volatile/sites/30/2020/11/Fridge-raid-fried-rice-614b256.jpg?quality=90&webp=true&resize=300,272'} },
+    { id: '2', image: {uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/190418-skinny-alfredo-horizontal-1-1556224749.png?crop=0.650xw:0.974xh;0.148xw,0&resize=980:*'} },
+    { id: '3', image: {uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/delish-tuscan-butter-roast-chicken-still005-1549637202.jpg?crop=0.519xw:0.921xh;0.230xw,0.0634xh&resize=640:*'} },
+    { id: '4', image: {uri: 'https://hips.hearstapps.com/hmg-prod.s3.amazonaws.com/images/honey-walnut-shrimp-vertical-1548093886.png?crop=1xw:1xh;center,top&resize=980:*'} }
   ]);
 
   const [indexSelected, setIndexSelected] = useState(0);
@@ -35,8 +61,7 @@ const RecipeScreen = ({ navigation: { navigate } }) => {
   };
 
   return (
-    <View style={{ flex: 1, backgroundColor: 'rgba(245, 241, 238, 1.0)'}}>
-      {/* <ImageBackground source = {require('./img/background.jpg')} resizeMode="cover" style={{flex: 1}}> */}
+    <View style={{ flex: 1, backgroundColor: '#f5f1ee'}}>
         <ScrollView>
           <View style={{height: 300}}>
             <Carousel
@@ -46,6 +71,7 @@ const RecipeScreen = ({ navigation: { navigate } }) => {
               itemWidth={width}
               autoplay={true}
               loop={true}
+              useScrollView={false}
               renderItem={({ item, index }) => (
                 <Image
                   key={index}
@@ -67,70 +93,44 @@ const RecipeScreen = ({ navigation: { navigate } }) => {
           </View>
 
           <View style={{padding: 10}}>
-            <TouchableOpacity style={styles.menuItem}
-            onPress={() => navigate('Recipe Details')}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
+            <FlatList
+              scrollEnabled={false}
+              data={recipes}
+              showsVerticalScrollIndicator={false}
+              refreshing={fetching}
+              renderItem={({ item }) => {
 
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity style={styles.menuItem}>
-              <Image style={styles.menuImage} source={require('../../images/salad.jpg')}/>
-              <Text style={styles.menuText}>
-                Salad
-              </Text>
-            </TouchableOpacity>
+                return (<TouchableHighlight
+                  underlayColor={'#cccccc'}
+                  onPress={() => {
+                    navigation.navigate('Recipe Details', {
+                      id: item.recipe_id,
+                      headerTitle: item.recipe_name,
+                      // refresh: this._query,
+                    })
+                  }}
+                >
+                  <View style={styles.menuItem}>
+                    <Image source={{uri: item.recipe_photo}}
+                      style={styles.menuImage}/>
+                    <Text style={styles.menuText}>{item.recipe_name}</Text>
+                  </View>
+                </TouchableHighlight>);
+              }}
+              keyExtractor={(item) => { return item.recipe_id.toString() }}
+            />
           </View>
         </ScrollView>
-      {/* </ImageBackground> */}
     </View>
-  );
-};
-
-export default RecipeScreen;
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DFEFE3',
+    backgroundColor: '#f5f1ee',
   },
   title: {
     fontSize: 48,
@@ -139,12 +139,16 @@ const styles = StyleSheet.create({
     fontFamily: 'Roboto',
   },
   menuImage: {
-    width: 50,
+    width: 125,
     height: 100,
-    flex: 0.4,
+    resizeMode: 'cover',
+    borderTopLeftRadius: 25,
+    borderBottomLeftRadius: 25,
   },
   menuText: {
-    fontFamily: "Helvetica"
+    fontFamily: "Helvetica",
+    textAlignVertical: 'center',
+    paddingLeft: 10,
   },
   menuItem: {
     flexDirection: "row",

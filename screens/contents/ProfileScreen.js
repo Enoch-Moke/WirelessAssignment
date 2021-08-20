@@ -87,7 +87,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#DFEFE3',
+    backgroundColor: '#f5f1ee',
   },
   profilePic: {
     position:'absolute',
