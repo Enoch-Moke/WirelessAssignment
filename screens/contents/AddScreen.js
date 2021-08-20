@@ -9,6 +9,8 @@ import {
   Alert,
   TouchableHighlight,
 } from 'react-native';
+import { CustomLabel } from '../../utilities/CustomLabel';
+
 let config = require('../../Config');
 
 export default function Add({ navigation, route }) {
@@ -20,7 +22,7 @@ export default function Add({ navigation, route }) {
   const [meal, setMeal] = useState(null);
 
   useEffect(() => {
-    fetch('https://mocki.io/v1/ef213a43-a43c-4fea-a5ab-0ab6b7a7757d')
+    fetch('https://mocki.io/v1/a61cc719-592e-4be8-8246-fd9f031d4f50')
       .then((response) => response.json())
       .then((responseJson) => {
         setMealsList(responseJson);
@@ -137,10 +139,10 @@ export default function Add({ navigation, route }) {
                     addMeal({ item, email });
                   }}
                 >
-                  <View style={styles.mealList}>
-                    <Text style={styles.mealTitle}>{item.name.toUpperCase()}</Text>
-                    <Text style={styles.mealInfo}>{item.calories} kcal</Text>
-                  </View>
+                  <CustomLabel
+                    title2={item.name.toUpperCase()}
+                    title3={item.calories + " kcal"}
+                  />
                 </TouchableHighlight>
               </View>
             );
@@ -174,21 +176,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
   },
   mealItem: {
-    alignSelf: 'stretch',
-  },
-  mealList: {
-    padding: 10,
-  },
-  mealTitle: {
     flex: 1,
-    padding: 10,
-    fontWeight: '700',
-    fontSize: 16,
-  },
-  mealInfo: {
-    flex: 1,
-    padding: 10,
-    fontSize: 15,
   },
   searchBar: {
     height: 50,
