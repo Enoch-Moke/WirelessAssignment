@@ -39,8 +39,8 @@ export default function PlanMain ({ navigation, route })  {
         return response.json()
       })
       .then((plansData) => {
-          setPlans(plansData);
-          setFetching(false);
+        setPlans(plansData);
+        setFetching(false);
       })
       .catch((error) => {
         console.log(error)
@@ -73,7 +73,7 @@ export default function PlanMain ({ navigation, route })  {
             </View>
           </TouchableHighlight>);
         }}
-        keyExtractor={(item) => { item.plan_id.toString() }}
+        keyExtractor={(item) => { return item.plan_id.toString() }}
       />
     </View>
   )
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
     // alignItems: 'center',
-    backgroundColor: '#DFEFE3',
+    backgroundColor: '#f5f1ee',
     paddingTop: 20,
   },
 

@@ -7,17 +7,23 @@ const Stack = createStackNavigator();
 
 function Recipe() {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator
+            screenOptions={{
+                headerTitleAlign: 'center',
+                headerTitleStyle: 'bold',
+            }}>
             <Stack.Screen
                 name='Recipe Home'
                 component={RecipeScreen}
                 options={{
-                    header: () => null
+                    headerLeft: () => null,
+                    headerTitle: 'Recipe'
                 }}
             />
             <Stack.Screen
                 name='Recipe Details'
                 component={RecipeDetailsScreen}
+                options={({ route }) => ({ title: route.params.headerTitle })}
             />
         </Stack.Navigator>
     )
