@@ -14,12 +14,6 @@ class CustomLabel extends Component {
     render() {
         return (
             <View style={[labelStyles.labelContainer, this.props.labelContainer]}>
-                {/* <View style={this.props.imageStyle1}>
-                    <Image
-                        source={{ uri: this.props.uri1 ? this.props.uri1 : '' }}
-                        style={{ width: this.props.width1 ? this.props.width1 : '', height: this.props.height1 ? this.props.height1 : '' }}
-                    />
-                </View> */}
                 <Text style={[labelStyles.title1, this.props.style1]}>
                     {this.props.title1 ? this.props.title1 : ''}
                 </Text>
@@ -29,12 +23,6 @@ class CustomLabel extends Component {
                 <Text style={labelStyles.title3}>
                     {this.props.title3 ? this.props.title3 : ''}
                 </Text>
-                {/* <View style={this.props.imageStyle2}>
-                    <Image
-                        source={{ uri: this.props.uri2 ? this.props.uri2 : '' }}
-                        style={{ width: this.props.width2 ? this.props.width2 : '', height: this.props.height2 ? this.props.height2 : '' }}
-                    />
-                </View> */}
             </View>
         )
     }
@@ -45,8 +33,6 @@ const labelStyles = StyleSheet.create({
         paddingBottom: 15,
         marginTop: 10,
         marginLeft: 40,
-        // borderBottomWidth: 1,
-        // borderColor: '#ccc',
     },
     title1: {
         fontSize: 22,
