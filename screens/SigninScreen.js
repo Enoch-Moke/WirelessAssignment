@@ -16,6 +16,7 @@ export default function Signin({ navigation }) {
 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [user, setUser] = useState(null);
 
   useEffect(() => {
     validateUser();
@@ -36,12 +37,16 @@ export default function Signin({ navigation }) {
     }
   }
 
-  const setUser = async () => {
+  const saveUser = async (user) => {
     try {
-      var user = {
-        Email: email,
+      var theUser = {
+        Name: user.name,
+        Email: user.email,
+        Password: user.password,
+        Age: user.age,
+        Gender: user.gender
       }
-      await AsyncStorage.setItem('UserData', JSON.stringify(user));
+      await AsyncStorage.setItem('UserData', JSON.stringify(theUser));
     } catch (error) {
       console.log(error);
     }
@@ -70,7 +75,8 @@ export default function Signin({ navigation }) {
       .then(user => {
         if (user != null) {
           if (password === user.password) {
-            setUser();
+            setUser(user);
+            saveUser(user);
             navigation.navigate('Content');
           } else {
             Alert.alert('Warning', 'Incorrect password. Please try again');
@@ -78,7 +84,6 @@ export default function Signin({ navigation }) {
         } else {
           Alert.alert('Warning', 'No account found. Please register an account');
         }
-
       })
       .catch(error => {
         console.error(error);
