@@ -31,15 +31,6 @@ export default function HomeScreen({ navigation, route }) {
         }
     }
 
-    const logout = async () => {
-        try {
-            await AsyncStorage.removeItem('UserData');
-            navigation.navigate('Auth');
-        } catch (error) {
-            console.log(error);
-        }
-    }
-
     return (
         <View style={styles.container}>
             <Text style={styles.text}>
@@ -53,13 +44,6 @@ export default function HomeScreen({ navigation, route }) {
                     email: email,
                 })}}
             />
-            <CustomButton
-                style={styles.button}
-                title='Log Out'
-                onPress={logout}
-            />
-
-
         </View>
     )
 }
@@ -78,6 +62,8 @@ const styles = StyleSheet.create({
         margin: 10,
     },
     button: {
+        position:'absolute',
+        bottom:'50%',
         margin: -50,
     }
 });
