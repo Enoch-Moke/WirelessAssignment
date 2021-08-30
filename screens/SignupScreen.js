@@ -46,7 +46,7 @@ const SignupScreen = ({ navigation }) => {
     }
 
     let url = config.settings.serverPath + '/api/users';
-       
+
     fetch(url, {
       method: 'POST',
       headers: {
@@ -79,17 +79,21 @@ const SignupScreen = ({ navigation }) => {
         Alert.alert('Error saving record');
       }
     })
-    .catch((error) => {
+      .catch((error) => {
         console.error(error);
-    });
+      });
   };
 
   const setUser = async () => {
     try {
-      var user = {
+      var theUser = {
+        Name: userName,
         Email: userEmail,
+        Password: userPassword,
+        Age: userAge,
+        Gender: userGender
       }
-      await AsyncStorage.setItem('UserData', JSON.stringify(user));
+      await AsyncStorage.setItem('UserData', JSON.stringify(theUser));
     } catch (error) {
       console.log(error);
     }
