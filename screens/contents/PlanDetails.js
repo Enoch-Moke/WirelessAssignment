@@ -121,7 +121,8 @@ const styles = StyleSheet.create({
         height: '100%',
         position: 'absolute',
         right: 12,
-        top: 2,
+        marginTop: 20,
+        top: 5,
         resizeMode: 'contain',
     },
 
@@ -139,13 +140,13 @@ const styles = StyleSheet.create({
         color: '#000000',
     },
     planTitle: {
-        fontSize: 25,
+        fontSize: 20,
         fontWeight: '800',
-        color: '#000000',
+        color: '#07006b',
         marginBottom: 30,
     },
     planInfo: {
-        fontSize: 20,
+        fontSize: 15,
         marginBottom: 30,
     },
 
