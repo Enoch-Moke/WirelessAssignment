@@ -97,7 +97,6 @@ export default function RecipeDetailsScreen ({navigation, route}) {
 
     return (
       <View style={styles.container}>
-        <ScrollView>
           <View style={styles.imageContainer}>
             <FlatList
               scrollEnabled={false}
@@ -105,7 +104,6 @@ export default function RecipeDetailsScreen ({navigation, route}) {
               showsVerticalScrollIndicator={false}
               refreshing={fetching}
               renderItem={({ item }) => {
-
                 return (
                   <View>
                     <Image source={{uri: item}}
@@ -121,9 +119,9 @@ export default function RecipeDetailsScreen ({navigation, route}) {
         
           <View style={styles.ingredientList}>
             <FlatList
-              scrollEnabled={false}
+              scrollEnabled={true}
               data={ingredients}
-              showsVerticalScrollIndicator={false}
+              showsVerticalScrollIndicator={true}
               refreshing={fetching}
               renderItem={({ item }) => {
 
@@ -141,12 +139,11 @@ export default function RecipeDetailsScreen ({navigation, route}) {
 
           <View style={styles.instructionList}>
             <FlatList
-              scrollEnabled={false}
+              scrollEnabled={true}
               data={instruction}
-              showsVerticalScrollIndicator={false}
+              showsVerticalScrollIndicator={true}
               refreshing={fetching}
               renderItem={({ item }) => {
-
                 return (
                   <Text style={styles.instructionText}>
                     {item}
@@ -159,7 +156,6 @@ export default function RecipeDetailsScreen ({navigation, route}) {
           <View>
             <Text></Text>
           </View>
-        </ScrollView>
       </View>
     );
 }
@@ -168,29 +164,29 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'center',
-    alignItems: 'center',
     backgroundColor: '#DFEFE3',
   },
   imageContainer: {
     justifyContent: 'center',
-    alignItems: 'center',
     marginTop: 10,
+    flex: 1,
+    marginLeft: 20,
   },
   foodImage: {
-    height: 300,
-    width: 350,
+    height: 100,
+    width: 100,
     borderWidth: 3,
     borderRadius: 20,
     borderColor: '#ffffff',
   },
   ingredientHeader: {
-    fontSize: 24,
+    fontSize: 18,
     marginTop: 20,
     marginBottom: 5,
     marginLeft: 20,
     marginRight: 20,
     paddingLeft: 10,
-    width: 140,
+    width: 110,
     backgroundColor: '#f5f1ee',
     borderWidth: 3,
     borderRadius: 50,
@@ -201,6 +197,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
     marginBottom: 30,
     padding: 10,
+    flex: 1,
     backgroundColor: '#f5f1ee',
     borderWidth: 3,
     borderRadius: 20,
@@ -221,6 +218,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     marginRight: 20,
     padding: 10,
+    flex: 2,
   },
   instructionText: {
     fontSize: 16,

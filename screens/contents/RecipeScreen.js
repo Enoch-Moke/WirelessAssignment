@@ -39,7 +39,6 @@ export default function RecipeScreen ({ navigation, route }) {
       })
       .then((recipesData) => {
         setRecipes(recipesData);
-        console.log(recipesData);
         setFetching(false);
       })
       .catch((error) => {
@@ -62,8 +61,7 @@ export default function RecipeScreen ({ navigation, route }) {
 
   return (
     <View style={{ flex: 1, backgroundColor: '#f5f1ee'}}>
-        <ScrollView>
-          <View style={{height: 300}}>
+          <View style={{flex: 3}}>
             <Carousel
               layout='default'
               data={images}
@@ -92,11 +90,11 @@ export default function RecipeScreen ({ navigation, route }) {
             />
           </View>
 
-          <View style={{padding: 10}}>
+          <View style={{padding: 10, flex: 5}}>
             <FlatList
-              scrollEnabled={false}
+              scrollEnabled={true}
               data={recipes}
-              showsVerticalScrollIndicator={false}
+              showsVerticalScrollIndicator={true}
               refreshing={fetching}
               renderItem={({ item }) => {
 
@@ -120,18 +118,11 @@ export default function RecipeScreen ({ navigation, route }) {
               keyExtractor={(item) => { return item.recipe_id.toString() }}
             />
           </View>
-        </ScrollView>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: '#f5f1ee',
-  },
   title: {
     fontSize: 48,
     textAlign: 'center',
