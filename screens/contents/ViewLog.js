@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: 'flex-start',
-    backgroundColor: '#DFEFE3',
+    backgroundColor: '#f5f1ee',
     paddingTop: 20,
   },
   mealList: {

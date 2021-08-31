@@ -30,7 +30,7 @@ const SignupScreen = ({ navigation }) => {
       return;
     }
 
-    if (!userEmail.includes("@") && !userEmail.includes(".")) {
+    if (!userEmail.includes("@") || !userEmail.includes(".")) {
       Alert.alert('Warning', 'Please enter a valid email address');
       return;
     }
