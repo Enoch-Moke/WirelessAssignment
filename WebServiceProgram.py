@@ -153,24 +153,24 @@ def store_user():
     return jsonify(response), 201
 
 
-@app.route('/api/users/<int:user_id>', methods=['PUT'])
-def update(user_id):
+@app.route('/api/users/<email>', methods=['PUT'])
+def update(email):
     if not request.json:
         abort(400)
 
-    if 'user_id' not in request.json:
+    if 'email' not in request.json:
         abort(400)
 
-    if int(request.json['user_id']) != user_id:
+    if request.json['email'] != email:
         abort(400)
 
     update_user = (
+        request.json['user_id'],
         request.json['name'],
-        request.json['email'],
         request.json['password'],
         request.json['age'],
         request.json['gender'],
-        str(user_id),
+        email,
     )
 
     db = sqlite3.connect(DB)
@@ -178,14 +178,14 @@ def update(user_id):
 
     cursor.execute('''
         UPDATE users SET
-            name=?,email=?,password=?,age=?,gender=?
-        WHERE user_id=?
+            name=?,password=?,age=?,gender=?
+        WHERE email=?
     ''', update_user)
 
     db.commit()
 
     response = {
-        'user_id': user,
+        'user_email': email,
         'affected': db.total_changes,
     }
 

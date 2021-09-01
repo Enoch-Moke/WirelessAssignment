@@ -24,6 +24,7 @@
     "react-native": "0.64.2",
     "react-native-chart-kit": "^2.6.1",
     "react-native-datepicker": "^1.7.2",
+    "react-native-dialog": "^8.2.0",
     "react-native-floating-action": "^1.21.0",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-paper": "^4.9.2",
