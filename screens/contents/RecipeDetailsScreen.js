@@ -1,18 +1,14 @@
-import {TextareaAutosize} from '@material-ui/core';
-import {green} from '@material-ui/core/colors';
-import React, {useState, useEffect, Component} from 'react';
+import React, {useState, useEffect } from 'react';
 import {
   StyleSheet,
   View,
   Image,
-  TouchableOpacity,
-  TouchableHighlight,
   Text,
   FlatList,
-  SafeAreaView,
   Alert,
-  ScrollView,
+  LogBox,
 } from 'react-native';
+LogBox.ignoreAllLogs();
 
 let config = require('../../Config');
 

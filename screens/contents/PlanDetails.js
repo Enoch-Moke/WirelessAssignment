@@ -3,14 +3,12 @@ import {
     StyleSheet,
     Text,
     View,
-    TouchableOpacity,
-    TouchableHighlight,
     Alert,
     FlatList,
-    SafeAreaView,
     Image,
+    LogBox,
 } from 'react-native';
-//import AsyncStorage from '@react-native-async-storage/async-storage';
+LogBox.ignoreAllLogs();
 
 let config = require('../../Config');
 

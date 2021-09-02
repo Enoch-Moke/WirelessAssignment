@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TextInput,
   Alert,
+  ScrollView,
 } from 'react-native';
 import { CustomButton } from '../utilities/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -100,73 +101,76 @@ const SignupScreen = ({ navigation }) => {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Create an account</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <Text style={styles.text}>Create an account</Text>
 
-      <TextInput
-        style={styles.input}
-        numberOfLines={1}
-        placeholder="Enter Your Name"
-        placeholderTextColor="#778899"
-        onChangeText={(UserName) => setUserName(UserName)}
-      />
-
-      <TextInput
-        style={styles.input}
-        numberOfLines={1}
-        placeholder="Enter Your Email"
-        placeholderTextColor="#778899"
-        keyboardType="email-address"
-        autoCapitalize="none"
-        autoCorrect={false}
-        onChangeText={(UserEmail) => setUserEmail(UserEmail)}
-      />
-
-      <TextInput
-        style={styles.input}
-        numberOfLines={1}
-        placeholder="Enter Password"
-        placeholderTextColor="#778899"
-        secureTextEntry={true}
-        onChangeText={(UserPassword) =>
-          setUserPassword(UserPassword)
-        }
-      />
-
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Your Age"
-        placeholderTextColor="#778899"
-        keyboardType="numeric"
-        onChangeText={(UserAge) => setUserAge(UserAge)}
-      />
-
-      <TouchableOpacity style={styles.dropdown}>
-        <Picker
-          selectedValue={userGender}
-          onValueChange={(itemValue, itemIndex) =>
-            setUserGender(itemValue)
-          }
-        >
-          <Picker.Item label="Male" value="Male" />
-          <Picker.Item label="Female" value="Female" />
-        </Picker>
-      </TouchableOpacity>
-
-      <View>
-        <CustomButton
-          title='Sign Up'
-          onPress={handleSignUp}
+        <TextInput
+          style={styles.input}
+          numberOfLines={1}
+          placeholder="Enter Your Name"
+          placeholderTextColor="#778899"
+          onChangeText={(UserName) => setUserName(UserName)}
         />
 
-        <Text style={styles.text2}>Already have an account?
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Sign In')}>
-            <Text style={styles.signin}>Sign In</Text>
-          </TouchableOpacity>
-        </Text>
+        <TextInput
+          style={styles.input}
+          numberOfLines={1}
+          placeholder="Enter Your Email"
+          placeholderTextColor="#778899"
+          keyboardType="email-address"
+          autoCapitalize="none"
+          autoCorrect={false}
+          onChangeText={(UserEmail) => setUserEmail(UserEmail)}
+        />
+
+        <TextInput
+          style={styles.input}
+          numberOfLines={1}
+          placeholder="Enter Password"
+          placeholderTextColor="#778899"
+          secureTextEntry={true}
+          onChangeText={(UserPassword) =>
+            setUserPassword(UserPassword)
+          }
+        />
+
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Your Age"
+          placeholderTextColor="#778899"
+          keyboardType="numeric"
+          onChangeText={(UserAge) => setUserAge(UserAge)}
+        />
+
+        <TouchableOpacity style={styles.dropdown}>
+          <Picker
+            selectedValue={userGender}
+            onValueChange={(itemValue, itemIndex) =>
+              setUserGender(itemValue)
+            }
+          >
+            <Picker.Item label="Male" value="Male" />
+            <Picker.Item label="Female" value="Female" />
+          </Picker>
+        </TouchableOpacity>
+
+        <View>
+          <CustomButton
+            title='Sign Up'
+            onPress={handleSignUp}
+          />
+
+          <Text style={styles.text2}>Already have an account?
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Sign In')}>
+              <Text style={styles.signin}>Sign In</Text>
+            </TouchableOpacity>
+          </Text>
+        </View>
       </View>
-    </View>
+
+    </ScrollView>
   );
 };
 
