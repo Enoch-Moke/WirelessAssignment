@@ -18,16 +18,6 @@ def users_get_row_as_dict(row):
 
     return row_dict
 
-def calories_get_row_as_dict(row):
-    row_dict = {
-        'calorie_id': row[0],
-        'user_email': row[1],
-        'calories_in': row[2],
-        'record_date': row[3],
-    }
-
-    return row_dict
-
 def meals_get_row_as_dict(row):
     row_dict = {
         'meal_id': row[0],
@@ -82,27 +72,6 @@ def ingredients_get_row_as_dict(row):
 
 app = Flask(__name__)
 
-#####
-
-@app.route('/api/users', methods=['GET'])
-def get_all_users():
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-    cursor.execute('SELECT * FROM users ORDER BY user_id')
-    rows = cursor.fetchall()
-
-    print(rows)
-
-    db.close()
-
-    rows_as_dict = []
-    for row in rows:
-        row_as_dict = users_get_row_as_dict(row)
-        rows_as_dict.append(row_as_dict)
-
-    return jsonify(rows_as_dict), 200
-
-
 @app.route('/api/users/<email>', methods=['GET'])
 def get_user(email):
     db = sqlite3.connect(DB)
@@ -154,7 +123,7 @@ def store_user():
 
 
 @app.route('/api/users/<email>', methods=['PUT'])
-def update(email):
+def update_user(email):
     if not request.json:
         abort(400)
 
@@ -165,11 +134,7 @@ def update(email):
         abort(400)
 
     update_user = (
-        request.json['user_id'],
-        request.json['name'],
         request.json['password'],
-        request.json['age'],
-        request.json['gender'],
         email,
     )
 
@@ -177,9 +142,7 @@ def update(email):
     cursor = db.cursor()
 
     cursor.execute('''
-        UPDATE users SET
-            name=?,password=?,age=?,gender=?
-        WHERE email=?
+        UPDATE users SET password=? WHERE email=?
     ''', update_user)
 
     db.commit()
@@ -193,110 +156,6 @@ def update(email):
 
     return jsonify(response), 201
 
-#####
-
-@app.route('/api/calories', methods=['GET'])
-def get_all_calories():
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-    cursor.execute('SELECT * FROM calories ORDER BY user_id')
-    rows = cursor.fetchall()
-
-    print(rows)
-
-    db.close()
-
-    rows_as_dict = []
-    for row in rows:
-        row_as_dict = calories_get_row_as_dict(row)
-        rows_as_dict.append(row_as_dict)
-
-    return jsonify(rows_as_dict), 200
-
-
-@app.route('/api/calories/<int:calories_id>', methods=['GET'])
-def get_calories(calories_id):
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-    cursor.execute('SELECT * FROM calories WHERE calories_id=?', (str(calories_id),))
-    row = cursor.fetchone()
-    db.close()
-
-    if row:
-        row_as_dict = calories_get_row_as_dict(row)
-        return jsonify(row_as_dict), 200
-    else:
-        return jsonify(None), 200
-
-
-@app.route('/api/calories', methods=['POST'])
-def store_calories():
-    if not request.json:
-        abort(404)
-
-    new_calories = (
-        request.json['user_email'],
-        request.json['calories_in'],
-        request.json['record_date'],
-    )
-
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-
-    cursor.execute('''
-        INSERT INTO calories(user_email,calories_in,record_date)
-        VALUES(?,?,?)
-    ''', new_calories)
-
-    calories_id = cursor.lastrowid
-
-    db.commit()
-
-    response = {
-        'calories_id': calories_id,
-        'affected': db.total_changes,
-    }
-
-    db.close()
-
-    return jsonify(response), 201
-
-@app.route('/api/calories/<email>', methods=['PUT'])
-def update_calories(email):
-    if not request.json:
-        abort(400)
-
-    if request.json['user_email'] != email:
-        abort(400)
-
-    update_calories = (
-        request.json['calories_id'],
-        email,
-        request.json['calories_in'],
-        request.json['record_date'],
-    )
-
-    db = sqlite3.connect(DB)
-    cursor = db.cursor()
-
-    cursor.execute('''
-        UPDATE calories SET
-            user_email=?,calories_in=?,record_date=?
-        WHERE calories_id=?
-    ''', update_calories)
-
-    db.commit()
-
-    response = {
-        'calories_id': calories_id,
-        'affected': db.total_changes,
-    }
-
-    db.close()
-
-    return jsonify(response), 201
-
-#####
 
 @app.route('/api/meals/<user_email>', methods=['GET'])
 def get_all_meals(user_email):
@@ -365,6 +224,7 @@ def store_meal(user_email):
 
     return jsonify(response), 201
 
+
 @app.route('/api/meals/<int:meal>', methods=['DELETE'])
 def delete(meal):
     if not request.json:
@@ -386,6 +246,7 @@ def delete(meal):
 
     return jsonify(response), 201
     
+    
 @app.route('/api/plans', methods=['GET'])
 def get_all_plans():
     db = sqlite3.connect(DB)
@@ -403,6 +264,7 @@ def get_all_plans():
         rows_as_dict.append(row_as_dict)
 
     return jsonify(rows_as_dict), 200
+
 
 @app.route('/api/plans/<int:plan_id>', methods=['GET'])
 def get_plan(plan_id):
@@ -422,6 +284,7 @@ def get_plan(plan_id):
 
     return jsonify(rows_as_dict), 200
 
+
 @app.route('/api/recipes', methods=['GET'])
 def get_all_recipes():
     db = sqlite3.connect(DB)
@@ -439,6 +302,7 @@ def get_all_recipes():
         rows_as_dict.append(row_as_dict)
 
     return jsonify(rows_as_dict), 200
+
 
 @app.route('/api/recipes/<int:recipe_id>', methods=['GET'])
 def get_recipes(recipe_id):
@@ -458,6 +322,7 @@ def get_recipes(recipe_id):
 
     return jsonify(rows_as_dict), 200
 
+
 @app.route('/api/instruction/<int:recipe_id>', methods=['GET'])
 def get_instruction(recipe_id):
     db = sqlite3.connect(DB)
@@ -471,6 +336,7 @@ def get_instruction(recipe_id):
 
     return jsonify(row), 200
 
+
 @app.route('/api/recipeImage/<int:recipe_id>', methods=['GET'])
 def get_image(recipe_id):
     db = sqlite3.connect(DB)
@@ -483,14 +349,7 @@ def get_image(recipe_id):
     db.close()
 
     return jsonify(row), 200
-
-#####
-
-# continue with RETRIEVING all and one data from recipes,
-# ingredients, plans and plan_details
-# see get_all_xxx & get_xxx from previous part
-
-#####
+    
 
 if __name__ == '__main__':
     parser = ArgumentParser()

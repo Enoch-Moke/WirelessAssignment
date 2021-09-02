@@ -7,8 +7,9 @@ import {
   TextInput,
   TouchableOpacity,
   Alert,
+  ScrollView,
 } from 'react-native';
-
+import { CustomButton } from '../utilities/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 let config = require('../Config');
 
@@ -91,32 +92,31 @@ export default function Signin({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Sign In To Your Account</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Email"
-        onChangeText={(value) => setEmail(value)}
-      />
-      <TextInput
-        style={styles.input}
-        placeholder="Enter Password"
-        secureTextEntry
-        onChangeText={(value) => setPassword(value)}
-      />
-      <TouchableOpacity
-        style={styles.userBtn}
-        onPress={handleSignIn}>
-        <Text style={styles.btnText}>Sign In</Text>
-      </TouchableOpacity>
-
-      <Text style={styles.text2}>Don't Have An Account?
+    <ScrollView contentContainerStyle={{ flexGrow: 1, justifyContent: 'space-between' }}>
+      <View style={styles.container}>
+        <Text style={styles.text}>Sign In To Your Account</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Email"
+          onChangeText={(value) => setEmail(value)}
+        />
+        <TextInput
+          style={styles.input}
+          placeholder="Enter Password"
+          secureTextEntry
+          onChangeText={(value) => setPassword(value)}
+        />
+        <CustomButton
+          title='Sign In'
+          onPress={handleSignIn}
+        />
+        <Text style={styles.text2}>Don't Have An Account?</Text>
         <TouchableOpacity
           onPress={() => navigation.navigate('Sign Up')}>
           <Text style={styles.signup}>Sign Up</Text>
         </TouchableOpacity>
-      </Text>
-    </View>
+      </View>
+    </ScrollView>
   )
 }
 
@@ -142,30 +142,12 @@ const styles = StyleSheet.create({
     marginBottom: 20,
     borderRadius: 30,
   },
-
-  userBtn: {
-    backgroundColor: '#8AB594',
-    padding: 15,
-    marginTop: 100,
-    bottom: 0,
-    width: 300,
-    fontFamily: 'Roboto',
-  },
-
-  btnText: {
-    fontSize: 18,
-    textAlign: 'center',
-    color: '#Ffffff',
-    fontFamily: 'Roboto',
-  },
-
   text2: {
     fontSize: 12,
     color: '#050505',
     bottom: 0,
     alignItems: 'flex-end',
   },
-
   signup: {
     fontSize: 12,
     marginLeft: 10,
@@ -174,5 +156,4 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     bottom: 0,
   }
-
 });

@@ -26,116 +26,138 @@ export default function Profile({ navigation, route }) {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
 
-  const [oldPassword, onChangeOldPassword] = React.useState(null);
-  const [newPassword, onChangeNewPassword] = React.useState(null);
-  const [confirmPassword, onChangeConfirmPassword] = React.useState(null);
+  const [oldPassword, setOldPassword] = React.useState(null);
+  const [newPassword, setNewPassword] = React.useState(null);
+  const [confirmPassword, setConfirmPassword] = React.useState(null);
 
   const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     validateUser();
-}, [])
+  }, [])
 
-const validateUser = () => {
-  try {
-    AsyncStorage.getItem('UserData')
-      .then(value => {
-        if (value != null) {
-          let user = JSON.parse(value);
+  const validateUser = () => {
+    try {
+      AsyncStorage.getItem('UserData')
+        .then(value => {
+          if (value != null) {
+            let user = JSON.parse(value);
             setName(user.Name);
             setEmail(user.Email);
             setPassword(user.Password);
             setAge(user.Age);
             setGender(user.Gender);
-        }
-      })
-  } catch (error) {
-    console.log(error);
+          }
+        })
+    } catch (error) {
+      console.log(error);
+    }
   }
-}
 
-/*
-const _update = () => {
-  let url = config.settings.serverPath + '/api/users';
-
-    fetch(url, {
-      method: 'PUT',
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
-
-      body: JSON.stringify({
-        password: newPassword,
-      }),
-    }).then((response) => {
-      if (!response.ok) {
-        Alert.alert('Error', response.status.toString());
-        throw Error('Error: ' + response.status);
-      }
-
-      return response.json()
-    }).then((responseJson) => {
-      if (responseJson.affected > 0) {
-        setUser();
-        navigation.navigate('Content');
-      }
-      else {
-        console.log('respond')
-        console.log(responseJson.affected);
-        Alert.alert('Error saving record');
-      }
-    })
-      .catch((error) => {
-        console.error(error);
-      });
+  const logout = async () => {
+    try {
+      await AsyncStorage.removeItem('UserData');
+      navigation.navigate('Auth');
+    } catch (error) {
+      console.log(error);
+    }
   }
-*/
 
-const logout = async () => {
-  try {
-    await AsyncStorage.removeItem('UserData');
-    navigation.navigate('Auth');
-  } catch (error) {
-    console.log(error);
-  }
-}
+  const showDialog = () => {
+    setVisible(true);
+  };
 
-const showDialog = () => {
-  setVisible(true);
-};
-
-const handleCancel = () => {
-  setVisible(false);
-};
-
-const handleChange = () => {
-  if(oldPassword != password){
-    Alert.alert(
-      "Error! Old Passwords do not match.",
-      "",
-      [{ text: "OK", onPress: () => console.log("OK Pressed")}]
-    );
-  }
-  else if(newPassword != confirmPassword){
-    Alert.alert(
-      "Error! New Passwords do not match.",
-      "",
-      [{ text: "OK", onPress: () => console.log("OK Pressed")}]
-    );
-  }
-  else{
-    Alert.alert(
-    "Password Successfully Changed",
-    "Log Out and Log In again to use new password.",
-    [{ text: "OK", onPress: () => console.log("OK Pressed")}]
-    );
-    //_update();
+  const handleCancel = () => {
     setVisible(false);
-  }
-};
+  };
 
-const calIntake = [
+  const handleChange = () => {
+
+    if (oldPassword.length == 0 || newPassword.length == 0 || confirmPassword.length == 0) {
+      Alert.alert('Warning', 'Please fill in all the particulars.');
+      return;
+    }
+
+    if (oldPassword != password) {
+      Alert.alert(
+        'Error',
+        'Incorrect old password. Please try again.'
+      );
+
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+    else if (newPassword != confirmPassword) {
+      Alert.alert(
+        'Error',
+        'Confirm password does not match with the new password. Please try again.'
+      );
+
+      setOldPassword('');
+      setNewPassword('');
+      setConfirmPassword('');
+    }
+    else {
+      let url = config.settings.serverPath + '/api/users/' + email;
+   
+      fetch(url, {
+        method: 'PUT',
+        headers: {
+          Accept: 'application/json',
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          password: newPassword,
+          email: email,
+        }),
+      })
+        .then((response) => {
+          if (!response.ok) {
+            Alert.alert('Error in updating the password: ', response.status.toString());
+            throw Error('Error in updating the password: ' + response.status);
+          }
+
+          return response.json()
+        })
+        .then((responseJson) => {
+          if (responseJson.affected > 0) {
+            Alert.alert('Password Successfully Changed');
+
+            saveUser();
+
+            setOldPassword('');
+            setNewPassword('');
+            setConfirmPassword('');
+            setVisible(false);
+          }
+          else {
+            Alert.alert('Error in changing password.');
+            setVisible(false);
+          }
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+
+  const saveUser = async () => {
+    try {
+      var theUser = {
+        Name: name,
+        Email: email,
+        Password: newPassword,
+        Age: age,
+        Gender: gender
+      }
+      await AsyncStorage.setItem('UserData', JSON.stringify(theUser));
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  const calIntake = [
     Math.random() * 1000 + 1700,
     Math.random() * 1000 + 1700,
     Math.random() * 1000 + 1700,
@@ -143,7 +165,8 @@ const calIntake = [
     Math.random() * 1000 + 1700,
     Math.random() * 1000 + 1700,
     Math.random() * 1000 + 1700
-];
+  ];
+
   return (
     <View style={styles.container}>
       <Image
@@ -152,13 +175,13 @@ const calIntake = [
       />
       <Text style={styles.name}>
         {name}
-      </Text>    
+      </Text>
       <Text style={styles.email}>
         {email}
-      </Text> 
+      </Text>
       <Text style={styles.genderAndAge}>
         {gender}, {age} y/o
-      </Text> 
+      </Text>
       <Text style={styles.graphTitle}>
         Calorie Intake Last 7 Days
       </Text>
@@ -171,27 +194,27 @@ const calIntake = [
         style={styles.changePasswordButton}
         title='Change Password'
         onPress={showDialog}
-      /> 
+      />
 
       <Dialog.Container visible={visible}>
         <Dialog.Title>Change Password</Dialog.Title>
         <TextInput
           style={styles.input}
-          onChangeText={onChangeOldPassword}
+          onChangeText={(value) => setOldPassword(value)}
           value={oldPassword}
           placeholder="Current Password"
           secureTextEntry={true}
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangeNewPassword}
+          onChangeText={(value) => setNewPassword(value)}
           value={newPassword}
           placeholder="New Password"
           secureTextEntry={true}
         />
         <TextInput
           style={styles.input}
-          onChangeText={onChangeConfirmPassword}
+          onChangeText={(value) => setConfirmPassword(value)}
           value={confirmPassword}
           placeholder="Confirm New Password"
           secureTextEntry={true}
@@ -209,8 +232,8 @@ const calIntake = [
             }
           ]
         }}
-        width={Dimensions.get("window").width*95/100} // from react-native
-        height={Dimensions.get("window").height/2}
+        width={Dimensions.get("window").width * 95 / 100} // from react-native
+        height={Dimensions.get("window").height / 2}
         yAxisSuffix="cal"
         yAxisInterval={1} // optional, defaults to 1
         chartConfig={{
@@ -247,62 +270,62 @@ const styles = StyleSheet.create({
     backgroundColor: '#f5f1ee',
   },
   profilePic: {
-    position:'absolute',
-    borderRadius:100,
-	  top: '3%',
+    position: 'absolute',
+    borderRadius: 100,
+    top: '3%',
     left: '7%',
   },
   name: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 25,
     fontFamily: 'Roboto',
     fontWeight: 'bold',
     textDecorationLine: 'underline',
-    color:'#4287f5',
-    top:'3%',
-    left:'35%',
+    color: '#4287f5',
+    top: '3%',
+    left: '35%',
   },
   email: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 20,
     fontFamily: 'Roboto',
-    color:'#666b73',
-    top:'9%',
-    left:'35%',
+    color: '#666b73',
+    top: '9%',
+    left: '35%',
   },
   genderAndAge: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 20,
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-    color:'#2ac41f',
-    top:'14%',
-    left:'35%',
+    color: '#2ac41f',
+    top: '14%',
+    left: '35%',
   },
   graphTitle: {
-    position:'absolute',
+    position: 'absolute',
     fontSize: 20,
     fontFamily: 'Roboto',
     fontWeight: 'bold',
-    color:'#e26a00',
-    bottom:'15%',
-  },  
+    color: '#e26a00',
+    bottom: '15%',
+  },
   logOutButton: {
-    position:'absolute',
-    bottom:'1%',
+    position: 'absolute',
+    bottom: '1%',
     width: '28%',
-    height:'12%',
-    left:'15%',
-    backgroundColor:'#ff7da0',
+    height: '12%',
+    left: '15%',
+    backgroundColor: '#ff7da0',
     justifyContent: 'center',
     alignItems: 'center',
   },
   changePasswordButton: {
-    position:'absolute',
-    bottom:'1%',
+    position: 'absolute',
+    bottom: '1%',
     width: '28%',
-    height:'12%',
-    right:'15%',
+    height: '12%',
+    right: '15%',
     justifyContent: 'center',
     alignItems: 'center',
   },

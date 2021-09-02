@@ -12,16 +12,6 @@ db.execute('''CREATE TABLE users(
     gender TEXT NOT NULL
 )''')
 
-db.execute('DROP TABLE IF EXISTS calories')
-
-db.execute('''CREATE TABLE calories(
-    calorie_id INTEGER PRIMARY KEY AUTOINCREMENT,
-    user_email TEXT NOT NULL,
-    calories_in INTEGER NOT NULL,
-    record_date INTEGER NOT NULL,
-    FOREIGN KEY(user_email) REFERENCES users(email)
-)''')
-
 db.execute('DROP TABLE IF EXISTS meals')
 
 db.execute('''CREATE TABLE meals(
@@ -96,14 +86,6 @@ cursor.execute('''
 ''')
 
 
-
-cursor.execute('''
-    INSERT INTO calories(user_email,calories_in,record_date)
-    VALUES('angela123@gmail.com','1288','1628726400000')
-''')
-
-
-
 cursor.execute('''
     INSERT INTO meals(user_email,meal_name,meal_cal,record_date)
     VALUES('angela123@gmail.com','KFC','600','1628726400000')
@@ -116,7 +98,6 @@ cursor.execute('''
     INSERT INTO meals(user_email,meal_name,meal_cal,record_date)
     VALUES('angela123@gmail.com','MCD','550','1628726400000')
 ''')
-
 
 
 cursor.execute('''
@@ -161,7 +142,6 @@ cursor.execute('''
     'https://images.immediate.co.uk/production/volatile/sites/30/2020/08/pineapple-fried-rice-25ff2b3.jpg?quality=90&webp=true&resize=375,341',
     '1) 1 Heat 1 tbsp oil in a wok. Add the eggs, swirling them up the sides, to make a thin omelette. Once cooked through, roll the omelette onto a chopping board and cut into ribbons. 2) Heat the remaining oil. Add the garlic, onions and five-spice. Stir-fry until sizzling, then add the rice (if using pouches, squeeze them first, to separate the grains), peas, sesame oil and soy. Cook over a high heat until the rice is hot, then stir through the pineapple and omelette ribbons.')
 ''')
-
 
 
 cursor.execute('''
@@ -520,7 +500,6 @@ cursor.execute('''
 ''')
 
 
-
 cursor.execute('''
     INSERT INTO plans(plan_name, plan_name_photo)
     VALUES('Atkins Diet','https://images-na.ssl-images-amazon.com/images/I/51fzvT1Yu5L._SY445_SX342_QL70_ML2_.jpg')
@@ -557,7 +536,6 @@ cursor.execute('''
     INSERT INTO plans(plan_name, plan_name_photo)
     VALUES('Mediterranean Diet','https://3i133rqau023qjc1k3txdvr1-wpengine.netdna-ssl.com/wp-content/uploads/2017/05/Mediterranean-500x500.jpg')
 ''')
-
 
 
 cursor.execute('''
