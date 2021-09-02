@@ -192,6 +192,7 @@ export default function Profile({ navigation, route }) {
       />
       <CustomButton
         style={styles.changePasswordButton}
+        textStyle={styles.changePasswordText}
         title='Change Password'
         onPress={showDialog}
       />
@@ -328,6 +329,9 @@ const styles = StyleSheet.create({
     right: '15%',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  changePasswordText: {
+    fontSize: 15,
   },
   input: {
     height: 40,

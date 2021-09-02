@@ -19,7 +19,7 @@ class CustomButton extends Component {
                 onPress={this.props.onPress}
                 >
                 <View style={[buttonStyles.userBtn, this.props.style]}>
-                    <Text style={buttonStyles.btnText}>{this.props.title}</Text>
+                    <Text style={[buttonStyles.btnText, this.props.textStyle]}>{this.props.title}</Text>
                 </View>
             </TouchableNativeFeedback>
         )
