@@ -32,8 +32,45 @@ export default function Profile({ navigation, route }) {
 
   useEffect(() => {
     validateUser();
-}, [])
+}, []);
+/*
+_update() {
+  //configure the URL to point to the placeID to be updated
+  let url = config.settings.serverPath + '/api/places/' + this.state.placeID;
+  // invoke the ‘PUT http request to server part    
+  fetch(url, {
+    method: 'PUT',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    //data is to be in JSON format
+    body: JSON.stringify({
+      name: {name},
+      password: {newPassword},
+    }),
+  })
+    .then((response) => {
+      if (!response.ok) {
+        Alert.alert('Error', response.status.toString());
+        throw Error('Error ' + response.status);
+      }
 
+      return response.json()
+    })
+    .then((responseJson) => {
+      if (responseJson.affected > 0) {
+        Alert.alert('Record Updated', 'Record for `' + this.state.name + '` has been updated');
+      }
+      else {
+        Alert.alert('Error updating record');
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+  }
+*/
 const validateUser = () => {
   try {
     AsyncStorage.getItem('UserData')
@@ -178,7 +215,7 @@ const calIntake = [
           backgroundGradientFrom: "#fb8c00",
           backgroundGradientTo: "#ffa726",
           decimalPlaces: 0, // optional, defaults to 2dp
-          color: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+          color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
           labelColor: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
           strokeWidth: 5,
           style: {

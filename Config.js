@@ -1,3 +1,3 @@
 exports.settings = {
-    serverPath: 'http://192.168.0.101:5000',
+    serverPath: 'http://192.168.0.100:5000',
 }
