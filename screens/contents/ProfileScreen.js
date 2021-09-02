@@ -16,6 +16,8 @@ import {
 import { CustomButton } from '../../utilities/CustomButton';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import Dialog from "react-native-dialog";
+let config = require('../../Config');
+
 
 export default function Profile({ navigation, route }) {
   const [name, setName] = useState('');
@@ -32,45 +34,8 @@ export default function Profile({ navigation, route }) {
 
   useEffect(() => {
     validateUser();
-}, []);
-/*
-_update() {
-  //configure the URL to point to the placeID to be updated
-  let url = config.settings.serverPath + '/api/places/' + this.state.placeID;
-  // invoke the ‘PUT http request to server part    
-  fetch(url, {
-    method: 'PUT',
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    //data is to be in JSON format
-    body: JSON.stringify({
-      name: {name},
-      password: {newPassword},
-    }),
-  })
-    .then((response) => {
-      if (!response.ok) {
-        Alert.alert('Error', response.status.toString());
-        throw Error('Error ' + response.status);
-      }
+}, [])
 
-      return response.json()
-    })
-    .then((responseJson) => {
-      if (responseJson.affected > 0) {
-        Alert.alert('Record Updated', 'Record for `' + this.state.name + '` has been updated');
-      }
-      else {
-        Alert.alert('Error updating record');
-      }
-    })
-    .catch((error) => {
-      console.error(error);
-    });
-  }
-*/
 const validateUser = () => {
   try {
     AsyncStorage.getItem('UserData')
@@ -88,7 +53,45 @@ const validateUser = () => {
     console.log(error);
   }
 }
-  
+
+/*
+const _update = () => {
+  let url = config.settings.serverPath + '/api/users';
+
+    fetch(url, {
+      method: 'PUT',
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+
+      body: JSON.stringify({
+        password: newPassword,
+      }),
+    }).then((response) => {
+      if (!response.ok) {
+        Alert.alert('Error', response.status.toString());
+        throw Error('Error: ' + response.status);
+      }
+
+      return response.json()
+    }).then((responseJson) => {
+      if (responseJson.affected > 0) {
+        setUser();
+        navigation.navigate('Content');
+      }
+      else {
+        console.log('respond')
+        console.log(responseJson.affected);
+        Alert.alert('Error saving record');
+      }
+    })
+      .catch((error) => {
+        console.error(error);
+      });
+  }
+*/
+
 const logout = async () => {
   try {
     await AsyncStorage.removeItem('UserData');
@@ -127,7 +130,7 @@ const handleChange = () => {
     "Log Out and Log In again to use new password.",
     [{ text: "OK", onPress: () => console.log("OK Pressed")}]
     );
-    //Function to update password in DB as {newPassword} 
+    //_update();
     setVisible(false);
   }
 };
